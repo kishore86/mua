@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="92984a33-6da3-46da-8924-0804d83e8072" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="American_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="6bcbedff-721d-4349-9a16-40a9b5447d8b" >
+		<http:request-connection host="american-v4-022024.us-e2.cloudhub.io" port="80" />
+	</http:request-config>
+	<http:request-config name="united_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="bc9860b9-6940-466d-91ed-34461e50f945" >
+		<http:request-connection host="mu.mule-training.com" port="80" />
+	</http:request-config>
+	<wsc:config name="delta_Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="1e4034ed-fa2e-4f06-99d1-15022af0c1a7" >
+		<wsc:connection wsdlLocation="http://mu.mule-training.com/delta?wsdl" service="TicketServiceService" port="DeltaFlightsServiceImplPort" address="http://mu.mule-training.com/delta" />
+	</wsc:config>
+</mule>
