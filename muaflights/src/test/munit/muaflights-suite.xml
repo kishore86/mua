@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="muaflights-suite.xml" />
+	<munit:test name="getMUAFlights-test" doc:id="554a8d1b-43b9-4ff2-9e89-fb2c6499426e" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="45d00d03-5ff9-4a77-a35d-1a783f4cf8bf" >
+				<munit:payload value="#[readUrl('classpath://getMUAFlightstest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getMUAFlightstest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getMUAFlights" doc:id="05423eed-2d1b-4e90-9daf-a5117670345d" name="getMUAFlights"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="11ad851b-b32d-4e77-ab48-5862fca27614" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getMUAFlightstest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="unitedFlightsFlow-test" doc:id="97a6226c-8056-4fba-a533-f0d661e7f369" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock United_aireline_Request" doc:id="117a6068-1a8f-4aa0-82d7-02946939083c" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c960a60b-c558-4fc6-8515-bdcb39fc2c41" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://unitedFlightsFlowtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://unitedFlightsFlowtest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="code" value="#[output application/java --- readUrl('classpath://unitedFlightsFlowtest\mock_variable_.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="airlinename" value="#[output application/java --- readUrl('classpath://unitedFlightsFlowtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="15ce960b-b58a-4b8d-abad-6e95ecce68fa" >
+				<munit:payload value="#[readUrl('classpath://unitedFlightsFlowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://unitedFlightsFlowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="code" value="#[output application/java --- readUrl('classpath://unitedFlightsFlowtest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="airlinename" value="#[output application/java --- readUrl('classpath://unitedFlightsFlowtest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to unitedFlightsFlow" doc:id="7d6cfd4a-c3b4-4395-acb0-5c95ab687822" name="unitedFlightsFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="030cbc40-707a-4ad8-92f3-2665fec2292a" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import unitedFlightsFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="getAllFlights-test" doc:id="42bf0c64-73da-42f3-9e3f-abe0a4982ef4" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="383102c7-bee8-4c19-8c2d-49318ff7dca7" >
+				<munit:payload value="#[readUrl('classpath://getAllFlightstest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getAllFlightstest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="code" value="#[output application/java --- readUrl('classpath://getAllFlightstest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getAllFlights" doc:id="d0cd6cfc-b960-4621-a560-8aff0a30ff7d" name="getAllFlights"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="0c2ba198-ccd5-4cf6-a4b2-b9d6d5baf28b" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getAllFlightstest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify callUnitedFlights" doc:id="e2bf3eeb-7bbc-4b45-8055-dcf62f361124" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="9e91718a-9028-41f5-9248-32bfe82329e2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="cf577a78-0b9b-418c-a3c9-1b514d31a06f" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="add896c1-b286-4f62-93ca-c291055fe886" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify callAmericanFlights" doc:id="805e0af0-fe75-4654-9923-521229ff962e" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2fa14dcd-b538-4d03-9e3c-3419840e616e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
